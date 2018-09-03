@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <title>Naranja Notifications</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="favicon.png">
+  <link rel="icon" href="favicon.png">
+  <script src="https://unpkg.com/naranja@1.0.1/lib/naranja.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/naranja@1.0.1/lib/naranja.min.css">
+  <link rel="stylesheet" href="./R/styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <script src="https://unpkg.com/vue@2.5.17/dist/vue.min.js"></script>
+</head>
+<body>
+
+  <div id="app">
+
+    <div class="container">
+
+    <div class="buttons">
+      <p>Notification type</p>
+      <div :isselected="type === 'log'" @click="type = 'log'"></div>
+      <div :isselected="type === 'success'" @click="type = 'success'"></div>
+      <div :isselected="type === 'warn'" @click="type = 'warn'"></div>
+      <div :isselected="type === 'error'" @click="type = 'error'"></div>
+    </div>
+
+    <hr>
+
+    <div>
+      <input type="checkbox" name="icon" id="icon" v-model="icon">
+      <label for="icon">Include icon</label>
+    </div>
+
+    <div>
+      <input type="checkbox" name="buttons" id="buttons" v-model="buttons">
+      <label for="buttons">Include buttons</label>
+    </div>
+
+    <div>
+      <input type="checkbox" name="close" id="close" v-model="close">
+      <label for="close">Close automatically</label>
+    </div>
+
+  </div>
+
+  <div class="container launch" @click="launchNotification">
+    <div>
+      Launch notification →
+    </div>
+  </div>
+
+  </div>
+
+  <a href="https://github.com/e1016/naranja" class="fork-on-github">fork on github</a>
+  <a href="http://eliseo.io" class="eliseo-io">eliseo.io</a>
+
+  <script>
+  const vm = new Vue ({
+    el: '#app',
+    data: {
+      type: 'log',
+      icon: true,
+      close: true,
+      buttons: true
+    },
+    methods: {
+      launchNotification () {
+        naranja()[this.type]({
+          title: 'Notification',
+          text: 'This is a new way to launch notifications',
+          timeout: this.close ? 3000 : 'keep',
+          icon: this.icon,
+          buttons: this.buttons ? [
+            {
+              text: 'OK',
+              click: function () {
+                console.log('Accepted in notification')
+              }
+            },
+            {
+              text: 'Cancel',
+              click: function () {
+                console.log('Declined in notification')
+              }
+            }
+          ] : undefined
+        })
+      }
+    }
+  })
+  </script>
+</body>
+</html>
